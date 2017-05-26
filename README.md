@@ -20,7 +20,7 @@ Aqui um guia rápido para usar o git:
   comando `cd nomeDaPata/` para abrir a pasta e o `cd ..` para sair da pasta atual.</br>
   
   Agora que está na pasta certa use o comando `git clone` para clonar o projeto na sua pasta atual:</br> 
-  `git clone https://github.com/Vitor-Felix/twom.git`</br>
+  `https://github.com/Vitor-Felix/a-mail-user-agent-inJava.git`</br>
   Pronto você já tem os arquivos do projeto localmente.
   
 ##3º - Ciclo básico em que trabalharemos
