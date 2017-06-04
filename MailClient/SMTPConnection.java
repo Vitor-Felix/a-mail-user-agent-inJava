@@ -14,7 +14,7 @@ public class SMTPConnection {
     public DataOutputStream toServer;
 
     /* Just to make it look nicer */
-    private static final int SMTP_PORT = 2525; // Recomendado pelo SMTP2GO
+    private static final int SMTP_PORT = 2525;		// Recomendado pelo SMTP2GO
     private static final String CRLF = "\r\n";
 
     /* Are we connected? Used in close() to determine what to do. */
@@ -52,18 +52,17 @@ public class SMTPConnection {
     public void send(Envelope envelope) throws IOException {
 		
     	sendCommand("AUTH LOGIN", 334);
-    	sendCommand(passTo64("eqbiom"), 334);
-    	sendCommand(passTo64("wilsonisaball"), 235);
-    	sendCommand("MAIL FROM:<eqbiom14.1@gmail.com>", 250);
-    	sendCommand("RCPT TO:<vytorfelix@gmail.com>", 250);
+    	sendCommand(passTo64(envelope.SMTPusername), 334);
+    	sendCommand(passTo64(envelope.SMTPpassword), 235);
+    	/*sendCommand("MAIL FROM:<eqbiom14.1@gmail.com>", 250);
+    	sendCommand("RCPT TO:<icaro.mafaldo@hotmail.com>", 250);
     	sendCommand("DATA", 354);
     	sendCommand(envelope.Message.toString() + CRLF + ".", 250);
-    	/*
+    	*/
 		sendCommand("MAIL FROM:<" + envelope.Sender + ">", 250);
 		sendCommand("RCPT TO:<" + envelope.Recipient + ">", 250);
 		sendCommand("DATA", 354);
 		sendCommand(envelope.Message.toString() + CRLF + ".", 250);
-		*/
     }
 
     /* Close the connection. Try to send QUIT-commmand and then close

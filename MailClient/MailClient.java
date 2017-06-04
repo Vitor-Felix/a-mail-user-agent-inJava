@@ -17,7 +17,7 @@ public class MailClient extends Frame {
     private Button btSend = new Button("Send");
     private Button btClear = new Button("Clear");
     private Button btQuit = new Button("Quit");
-    private Label serverLabel = new Label("Local mailserver:");
+    private Label serverLabel = new Label("Mailserver:");
     private TextField serverField = new TextField("", 40);
     private Label fromLabel = new Label("From:");
     private TextField fromField = new TextField("", 40);
@@ -25,8 +25,10 @@ public class MailClient extends Frame {
     // Separei os campos de password, para ficar mais rapido de ver
     // Esses campos estao defasados, mas ia dar muito trabalho mudar
     // Esse JPasswordField ja eh mais atualizado do javax.swing
+    private Label userLabel = new Label("Username:");
+    private TextField userField = new TextField("", 40);
     private Label passLabel = new Label("Password:");
-    private JPasswordField passField = new JPasswordField(30);
+    private JPasswordField passField = new JPasswordField("", 40);
 
     private Label toLabel = new Label("To:"); 
     private TextField toField = new TextField("", 40);
@@ -34,6 +36,8 @@ public class MailClient extends Frame {
     private TextField subjectField = new TextField("", 40);
     private Label messageLabel = new Label("Message:");
     private TextArea messageText = new TextArea(10, 40);
+
+	private static final String mailServer = "mail.smtp2go.com";
 
     /**
      * Create a new MailClient window with fields for entering all
@@ -45,24 +49,21 @@ public class MailClient extends Frame {
 		/* Create panels for holding the fields. To make it look nice,
 		   create an extra panel for holding all the child panels. */
 		Panel serverPanel = new Panel(new BorderLayout());
+		Panel userPanel = new Panel(new BorderLayout());
+		Panel passPanel = new Panel(new BorderLayout());	
 		Panel fromPanel = new Panel(new BorderLayout());
-
-		// Criando Panel para password
-		Panel passPanel = new Panel(new BorderLayout());
-
 		Panel toPanel = new Panel(new BorderLayout());
 		Panel subjectPanel = new Panel(new BorderLayout());
 		Panel messagePanel = new Panel(new BorderLayout());
 
 		serverPanel.add(serverLabel, BorderLayout.WEST);
 		serverPanel.add(serverField, BorderLayout.CENTER);
-		fromPanel.add(fromLabel, BorderLayout.WEST);
-		fromPanel.add(fromField, BorderLayout.CENTER);
-
-		// Adcionando o label e o campo na passPanel
+		userPanel.add(userLabel, BorderLayout.WEST);
+		userPanel.add(userField, BorderLayout.CENTER);
 		passPanel.add(passLabel, BorderLayout.WEST);
 		passPanel.add(passField, BorderLayout.CENTER);
-
+		fromPanel.add(fromLabel, BorderLayout.WEST);
+		fromPanel.add(fromField, BorderLayout.CENTER);
 		toPanel.add(toLabel, BorderLayout.WEST);
 		toPanel.add(toField, BorderLayout.CENTER);
 		subjectPanel.add(subjectLabel, BorderLayout.WEST);
@@ -72,11 +73,12 @@ public class MailClient extends Frame {
 
 		Panel fieldPanel = new Panel(new GridLayout(0, 1));
 		fieldPanel.add(serverPanel);
-		fieldPanel.add(fromPanel);
 
 		// Adcionando passPanel no Panel de campos 
+		fieldPanel.add(userPanel);		
 		fieldPanel.add(passPanel);
 
+		fieldPanel.add(fromPanel);
 		fieldPanel.add(toPanel);
 		fieldPanel.add(subjectPanel);
 
@@ -106,7 +108,6 @@ public class MailClient extends Frame {
     class SendListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("Sending mail");
-
 
 			// Debugando campo de senha
 			// String passIsString = passField.getText();
@@ -140,18 +141,11 @@ public class MailClient extends Frame {
 			/* Create the message */
 			// Passando o campo de senha por ultimo para ficar mais evidente
 
-			// Passando estaticos para ficar mais rapido
-			Message mailMessage = new Message("vytorfelix@gmail.com", 
-							  "vytorfelix2@gmail.com", 
-							  "Tarefinha de Redes", 
-							  "corpo da mensagem hahaha");
-			
-
-			// Message mailMessage = new Message(fromField.getText(), 
-			// 				  toField.getText(), 
-			// 				  subjectField.getText(), 
-			// 				  messageText.getText());
-			// 				  //passField.getText());
+			Message mailMessage = new Message(fromField.getText(), 
+							  toField.getText(), 
+							  subjectField.getText(), 
+							  messageText.getText());
+							  //passField.getText());
 
 			/* Check that the message is valid, i.e., sender and
 			   recipient addresses look ok. */
@@ -163,7 +157,7 @@ public class MailClient extends Frame {
 			   the message. */
 			Envelope envelope;
 			try {
-				envelope = new Envelope(mailMessage, "mail.smtp2go.com.");
+				envelope = new Envelope(mailMessage, serverField.getText(), userField.getText(), passField.getText());
 				// envelope = new Envelope(mailMessage, serverField.getText());
 			} catch (UnknownHostException e) {
 			/* If there is an error, do not go further */

@@ -19,12 +19,16 @@ public class Envelope {
     /* Target MX-host */
     public String DestHost;
     public InetAddress DestAddr;
+	
+	// credenciais para o AUTH LOGIN
+	public String SMTPusername;
+	public String SMTPpassword;	
 
     /* The actual message */
     public Message Message;
 
     /* Create the envelope. */
-    public Envelope(Message message, String localServer) throws UnknownHostException {
+    public Envelope(Message message, String mailServer, String SMTPuser, String SMTPpass) throws UnknownHostException {
 		/* Get sender and recipient. */
 		Sender = message.getFrom();
 		Recipient = message.getTo();
@@ -36,7 +40,7 @@ public class Envelope {
 
 		/* Take the name of the local mailserver and map it into an
 		 * InetAddress */
-		DestHost = localServer;
+		DestHost = mailServer;
 		try {
 			DestAddr = InetAddress.getByName(DestHost);
 		} catch (UnknownHostException e) {
@@ -44,6 +48,10 @@ public class Envelope {
 			System.out.println(e);
 			throw e;
 		}
+		
+		SMTPusername = SMTPuser;
+		SMTPpassword = SMTPpass;
+
 		return;
     }
 

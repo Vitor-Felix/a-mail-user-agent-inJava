@@ -54,7 +54,7 @@ public class Message {
     public boolean isValid() {
 		int fromat = From.indexOf('@');
 		int toat = To.indexOf('@');
-
+		
 		if(fromat < 1 || (From.length() - fromat) <= 1) {
 			System.out.println("Sender address is invalid");
 			return false;
@@ -73,7 +73,7 @@ public class Message {
 		if(toat != To.lastIndexOf('@')) {
 			System.out.println("Recipient address is invalid");
 			return false;
-		}	
+		}
 
 		return true;
 	}
