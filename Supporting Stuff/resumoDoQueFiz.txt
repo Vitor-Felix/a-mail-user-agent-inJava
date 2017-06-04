@@ -1,0 +1,31 @@
+Mafaldo, estou colocando aqui o que eu lembro de cabeça.
+Amanhã eu acordo e falo contigo, por umas 10 horas.
+
+Estou usando o site: https://app.smtp2go.com
+a galera daí é especialista em conseguir enviar emails para qualquer email.
+
+Usei um email antigo de uma turma que eu tinha, pra fazer a conta:
+
+	email: eqbiom14.1@gmail.com
+	senha: biom2014
+
+	no SMTP2GO:
+		SMTP username: eqbiom
+		SMTP password: wilsonisaball
+
+Eu acabei com a GUI (MailClient.java), porque toda vez que ia testar, tinha que inserir os campos.
+No caso eu passei as informações direto nas funções, já pra testar direto.
+Aí tem que reativar lá os campos... Inclusive tem um de passWord que vai ter que usar.
+
+Aí tudo que fiz foi no SMTPConnection, passei mais tempo na função sendCommand()
+Aí tu vai ver que basicamente ele faz a conversa que está aqui:
+http://www.samlogic.net/articles/smtp-commands-reference-auth.htm , escolhi AUTH LOGIN
+porque ia um passo de cada vez e era mais facil de achar o erro.
+
+tem a função passTo64, que tem que enviar o username e password nesse encoded...
+
+O ruim é que tem que ter o login que fez a conta no SMTP2GO. Mas dele dá pra enviar quem quiser.
+
+Mas ainda tem bastante coisa, porque passei os parametros direto na função e tem que passar 
+pela interface de usuario.
+

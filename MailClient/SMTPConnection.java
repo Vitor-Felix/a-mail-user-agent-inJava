@@ -14,7 +14,7 @@ public class SMTPConnection {
     public DataOutputStream toServer;
 
     /* Just to make it look nicer */
-    private static final int SMTP_PORT = 25;
+    private static final int SMTP_PORT = 2525; // Recomendado pelo SMTP2GO
     private static final String CRLF = "\r\n";
 
     /* Are we connected? Used in close() to determine what to do. */
@@ -36,7 +36,8 @@ public class SMTPConnection {
 
 		String localhost = (InetAddress.getLocalHost()).getHostName();
 		try {
-			sendCommand("HELO " + localhost, 250);
+			sendCommand("EHLO " + localhost, 250);
+			//System.out.println("Enviou HELO");
 		} catch (IOException e) {
 			System.out.println("HELO failed. Aborting.");
 			return;
@@ -49,10 +50,20 @@ public class SMTPConnection {
        correct order. No checking for errors, just throw them to
        the caller. */
     public void send(Envelope envelope) throws IOException {
+		
+    	sendCommand("AUTH LOGIN", 334);
+    	sendCommand(passTo64("eqbiom"), 334);
+    	sendCommand(passTo64("wilsonisaball"), 235);
+    	sendCommand("MAIL FROM:<eqbiom14.1@gmail.com>", 250);
+    	sendCommand("RCPT TO:<vytorfelix@gmail.com>", 250);
+    	sendCommand("DATA", 354);
+    	sendCommand(envelope.Message.toString() + CRLF + ".", 250);
+    	/*
 		sendCommand("MAIL FROM:<" + envelope.Sender + ">", 250);
 		sendCommand("RCPT TO:<" + envelope.Recipient + ">", 250);
 		sendCommand("DATA", 354);
 		sendCommand(envelope.Message.toString() + CRLF + ".", 250);
+		*/
     }
 
     /* Close the connection. Try to send QUIT-commmand and then close
@@ -74,7 +85,24 @@ public class SMTPConnection {
 		String reply = null;
 	
 		toServer.writeBytes(command + CRLF);
+
+		// Para visualizar o handshake, fica bem mais facil
+		System.out.println("CLIENT: " + command);
+
 		reply = fromServer.readLine();
+		System.out.println("SERVER: " + reply);
+
+		/*
+			Isso eh para o caso de o server enviar multiplas repostas
+			Verifica se o Buffer esta pronto para ser lido
+		*/
+		if(fromServer.ready()){
+			while(fromServer.ready()){
+				reply = fromServer.readLine();
+				System.out.println("SERVER: " + reply);
+			}
+		}
+
 		if(parseReply(reply) != rc) {
 			System.out.println("Error in command: " + command);
 			System.out.println(reply);
@@ -84,9 +112,18 @@ public class SMTPConnection {
 
     /* Parse the reply line from the server. Returns the reply code. */
     private int parseReply(String reply) {
-		StringTokenizer parser = new StringTokenizer(reply);
+    	// As respostas tambem sao divididas por "-", alem de " "
+		StringTokenizer parser = new StringTokenizer(reply, " -");
 		String replycode = parser.nextToken();
 		return (new Integer(replycode)).intValue();
+    }
+
+    // Aqui esta o para autenticacao de login e senha "codificador" (String BASE64)
+    private String passTo64(String phrase){
+    	byte[] encodedBytes = Base64.getEncoder().encode(phrase.getBytes());
+
+    	return new String(encodedBytes);
+		//System.out.println("encodedBytes " + new String(encodedBytes));	
     }
 
     /* Destructor. Closes the connection if something bad happens. */

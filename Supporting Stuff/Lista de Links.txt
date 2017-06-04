@@ -15,4 +15,10 @@
 
 6. Usando Javax para enviar para gmail:
 	https://www.mkyong.com/java/javamail-api-sending-email-via-gmail-smtp-example/
+
+7. Javamail para hotmail:
+	http://www.devmedia.com.br/javamail-enviando-email-utilizando-o-hotmail/18042
+
+8. Passar campos de email e senha com AUTH:
+	http://www.samlogic.net/articles/smtp-commands-reference-auth.htm
 	
