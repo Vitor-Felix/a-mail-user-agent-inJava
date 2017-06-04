@@ -19,16 +19,19 @@ public class Envelope {
     /* Target MX-host */
     public String DestHost;
     public InetAddress DestAddr;
-	
+
+	private static final String mailServer = "mail.smtp2go.com";
+    public static final int SMTP_PORT = 2525;		// Recomendado pelo SMTP2GO
+
 	// credenciais para o AUTH LOGIN
-	public String SMTPusername;
-	public String SMTPpassword;	
+	public String SMTP_USER;
+	public String SMTP_PASS;	
 
     /* The actual message */
     public Message Message;
 
     /* Create the envelope. */
-    public Envelope(Message message, String mailServer, String SMTPuser, String SMTPpass) throws UnknownHostException {
+    public Envelope(Message message, String SMTPuser, String SMTPpass) throws UnknownHostException {
 		/* Get sender and recipient. */
 		Sender = message.getFrom();
 		Recipient = message.getTo();
@@ -49,8 +52,8 @@ public class Envelope {
 			throw e;
 		}
 		
-		SMTPusername = SMTPuser;
-		SMTPpassword = SMTPpass;
+		SMTP_USER = SMTPuser;
+		SMTP_PASS = SMTPpass;
 
 		return;
     }

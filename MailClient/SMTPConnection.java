@@ -14,7 +14,6 @@ public class SMTPConnection {
     public DataOutputStream toServer;
 
     /* Just to make it look nicer */
-    private static final int SMTP_PORT = 2525;		// Recomendado pelo SMTP2GO
     private static final String CRLF = "\r\n";
 
     /* Are we connected? Used in close() to determine what to do. */
@@ -23,7 +22,7 @@ public class SMTPConnection {
     /* Create an SMTPConnection object. Create the socket and the 
        associated streams. Send HELO-command and check for errors. */
     public SMTPConnection(Envelope envelope) throws IOException {
-		connection = new Socket(envelope.DestAddr, SMTP_PORT);
+		connection = new Socket(envelope.DestAddr, envelope.SMTP_PORT);
 		fromServer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		toServer = new DataOutputStream(connection.getOutputStream());
 
@@ -37,7 +36,6 @@ public class SMTPConnection {
 		String localhost = (InetAddress.getLocalHost()).getHostName();
 		try {
 			sendCommand("EHLO " + localhost, 250);
-			//System.out.println("Enviou HELO");
 		} catch (IOException e) {
 			System.out.println("HELO failed. Aborting.");
 			return;
@@ -52,8 +50,8 @@ public class SMTPConnection {
     public void send(Envelope envelope) throws IOException {
 		
     	sendCommand("AUTH LOGIN", 334);
-    	sendCommand(passTo64(envelope.SMTPusername), 334);
-    	sendCommand(passTo64(envelope.SMTPpassword), 235);
+    	sendCommand(passTo64(envelope.SMTP_USER), 334);
+    	sendCommand(passTo64(envelope.SMTP_PASS), 235);
     	/*sendCommand("MAIL FROM:<eqbiom14.1@gmail.com>", 250);
     	sendCommand("RCPT TO:<icaro.mafaldo@hotmail.com>", 250);
     	sendCommand("DATA", 354);
@@ -61,6 +59,7 @@ public class SMTPConnection {
     	*/
 		sendCommand("MAIL FROM:<" + envelope.Sender + ">", 250);
 		sendCommand("RCPT TO:<" + envelope.Recipient + ">", 250);
+		sendCommand("RCPT TO:<icaro.mafaldo@gmail.com>", 250);
 		sendCommand("DATA", 354);
 		sendCommand(envelope.Message.toString() + CRLF + ".", 250);
     }
@@ -95,6 +94,7 @@ public class SMTPConnection {
 			Isso eh para o caso de o server enviar multiplas repostas
 			Verifica se o Buffer esta pronto para ser lido
 		*/
+
 		if(fromServer.ready()){
 			while(fromServer.ready()){
 				reply = fromServer.readLine();
@@ -122,7 +122,6 @@ public class SMTPConnection {
     	byte[] encodedBytes = Base64.getEncoder().encode(phrase.getBytes());
 
     	return new String(encodedBytes);
-		//System.out.println("encodedBytes " + new String(encodedBytes));	
     }
 
     /* Destructor. Closes the connection if something bad happens. */

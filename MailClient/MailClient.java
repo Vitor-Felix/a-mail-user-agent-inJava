@@ -13,7 +13,7 @@ import javax.swing.*;
  * @author Jussi Kangasharju
  */
 public class MailClient extends Frame {
-    /* The stuff for the GUI. */
+	/* The stuff for the GUI. */
     private Button btSend = new Button("Send");
     private Button btClear = new Button("Clear");
     private Button btQuit = new Button("Quit");
@@ -45,10 +45,10 @@ public class MailClient extends Frame {
      */
     public MailClient() {
 		super("Java Mailclient");
-	
+    
 		/* Create panels for holding the fields. To make it look nice,
 		   create an extra panel for holding all the child panels. */
-		Panel serverPanel = new Panel(new BorderLayout());
+		//Panel serverPanel = new Panel(new BorderLayout());
 		Panel userPanel = new Panel(new BorderLayout());
 		Panel passPanel = new Panel(new BorderLayout());	
 		Panel fromPanel = new Panel(new BorderLayout());
@@ -56,8 +56,8 @@ public class MailClient extends Frame {
 		Panel subjectPanel = new Panel(new BorderLayout());
 		Panel messagePanel = new Panel(new BorderLayout());
 
-		serverPanel.add(serverLabel, BorderLayout.WEST);
-		serverPanel.add(serverField, BorderLayout.CENTER);
+		//serverPanel.add(serverLabel, BorderLayout.WEST);
+		//serverPanel.add(serverField, BorderLayout.CENTER);
 		userPanel.add(userLabel, BorderLayout.WEST);
 		userPanel.add(userField, BorderLayout.CENTER);
 		passPanel.add(passLabel, BorderLayout.WEST);
@@ -72,7 +72,7 @@ public class MailClient extends Frame {
 		messagePanel.add(messageText, BorderLayout.CENTER);
 
 		Panel fieldPanel = new Panel(new GridLayout(0, 1));
-		fieldPanel.add(serverPanel);
+		//fieldPanel.add(serverPanel);
 
 		// Adcionando passPanel no Panel de campos 
 		fieldPanel.add(userPanel);		
@@ -157,7 +157,7 @@ public class MailClient extends Frame {
 			   the message. */
 			Envelope envelope;
 			try {
-				envelope = new Envelope(mailMessage, serverField.getText(), userField.getText(), passField.getText());
+				envelope = new Envelope(mailMessage, userField.getText(), passField.getText());
 				// envelope = new Envelope(mailMessage, serverField.getText());
 			} catch (UnknownHostException e) {
 			/* If there is an error, do not go further */
