@@ -14,7 +14,7 @@ public class Envelope {
     public String Sender;
 
     /* SMTP-recipient, or contents of To-header. */
-    public String Recipient;
+    public String[] Recipients;
 
     /* Target MX-host */
     public String DestHost;
@@ -34,7 +34,7 @@ public class Envelope {
     public Envelope(Message message, String SMTPuser, String SMTPpass) throws UnknownHostException {
 		/* Get sender and recipient. */
 		Sender = message.getFrom();
-		Recipient = message.getTo();
+		Recipients = message.getTo();
 
 		/* Get message. We must escape the message to make sure that 
 		   there are no single periods on a line. This would mess up
@@ -68,16 +68,16 @@ public class Envelope {
 		while(parser.hasMoreTokens()) {
 			token = parser.nextToken();
 			if(token.startsWith(".")) {
-			token = "." + token;
+				token = "." + token;
 			}
 			escapedBody += token;
 		}
 		message.Body = escapedBody;
 		return message;
-		}
+	}
 
-		/* For printing the envelope. Only for debug. */
-		public String toString() {
+	/* For printing the envelope. Only for debug. 
+	public String toString() {
 		String res = "Sender: " + Sender + '\n';
 		res += "Recipient: " + Recipient + '\n';
 		res += "MX-host: " + DestHost + ", address: " + DestAddr + '\n';
@@ -85,5 +85,5 @@ public class Envelope {
 		res += Message.toString();
 	
 		return res;
-    }
+    }*/
 }

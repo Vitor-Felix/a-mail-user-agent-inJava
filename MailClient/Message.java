@@ -16,7 +16,7 @@ public class Message {
     /* Sender and recipient. With these, we don't need to extract them
        from the headers. */
     private String From;
-	private String To;
+	private String[] To;
 
     /* To make it look nicer */
     private static final String CRLF = "\r\n";
@@ -25,10 +25,24 @@ public class Message {
        RFC 822 (From, To, Date). */
     public Message(String from, String to, String subject, String text) {
 		/* Remove whitespace */
-		From = from.trim();
-		To = to.trim();
+		From = from.trim(); 
+
+		To = to.split(";");
+		for (int i = 0; i < To.length; i++){
+			To[i] = To[i].trim();
+		}
+
 		Headers = "From: " + From + CRLF;
-		Headers += "To: " + To + CRLF;
+		Headers += "To:";
+		if (To.length == 1) {
+			Headers += " " + To[0] + CRLF;
+		}
+		else {
+			for (int i = 0; i < To.length - 1; i++){
+				Headers += " " + To[i] + ";";
+			}
+			Headers += " " + To[To.length - 1] + CRLF;
+		}
 		Headers += "Subject: " + subject.trim() + CRLF;
 
 		/* A close approximation of the required format. Unfortunately
@@ -45,7 +59,7 @@ public class Message {
 		return From;
     }
 
-    public String getTo() {
+	public String[] getTo() {
 		return To;
     }
 
@@ -53,26 +67,28 @@ public class Message {
        both sender and recipient contain only one @-sign. */
     public boolean isValid() {
 		int fromat = From.indexOf('@');
-		int toat = To.indexOf('@');
 		
 		if(fromat < 1 || (From.length() - fromat) <= 1) {
-			System.out.println("Sender address is invalid");
-			return false;
-		}
-
-		if(toat < 1 || (To.length() - toat) <= 1) {
-			System.out.println("Recipient address is invalid");
+			System.out.println("\"" + From + "\"" + " - " + "Sender address is invalid");
 			return false;
 		}
 
 		if(fromat != From.lastIndexOf('@')) {
-			System.out.println("Sender address is invalid");
+			System.out.println("\"" + From + "\"" + " - " + "Sender address is invalid");
 			return false;
 		}
 
-		if(toat != To.lastIndexOf('@')) {
-			System.out.println("Recipient address is invalid");
-			return false;
+		for(int i = 0; i < To.length; i++) {
+			int toat = To[i].indexOf('@');	
+			if(toat < 1 || (To[i].length() - toat) <= 1) {
+				System.out.println("\"" + To[i] + "\"" + " - " + "Recipient address is invalid");
+				return false;
+			}
+
+			if(toat != To[i].lastIndexOf('@')) {
+				System.out.println("\"" + To[i] + "\"" + " - " + "Recipient address is invalid");
+				return false;
+			}
 		}
 
 		return true;

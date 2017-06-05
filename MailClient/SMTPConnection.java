@@ -47,19 +47,14 @@ public class SMTPConnection {
     /* Send the message. Simply writes the correct SMTP-commands in the
        correct order. No checking for errors, just throw them to
        the caller. */
-    public void send(Envelope envelope) throws IOException {
-		
+    public void send(Envelope envelope) throws IOException {		
     	sendCommand("AUTH LOGIN", 334);
     	sendCommand(passTo64(envelope.SMTP_USER), 334);
     	sendCommand(passTo64(envelope.SMTP_PASS), 235);
-    	/*sendCommand("MAIL FROM:<eqbiom14.1@gmail.com>", 250);
-    	sendCommand("RCPT TO:<icaro.mafaldo@hotmail.com>", 250);
-    	sendCommand("DATA", 354);
-    	sendCommand(envelope.Message.toString() + CRLF + ".", 250);
-    	*/
 		sendCommand("MAIL FROM:<" + envelope.Sender + ">", 250);
-		sendCommand("RCPT TO:<" + envelope.Recipient + ">", 250);
-		sendCommand("RCPT TO:<icaro.mafaldo@gmail.com>", 250);
+		for(String recipient : envelope.Recipients){
+			sendCommand("RCPT TO:<" + recipient + ">", 250);
+		}
 		sendCommand("DATA", 354);
 		sendCommand(envelope.Message.toString() + CRLF + ".", 250);
     }
@@ -90,10 +85,8 @@ public class SMTPConnection {
 		reply = fromServer.readLine();
 		System.out.println("SERVER: " + reply);
 
-		/*
-			Isso eh para o caso de o server enviar multiplas repostas
-			Verifica se o Buffer esta pronto para ser lido
-		*/
+		// Isso eh para o caso de o server enviar multiplas repostas
+		// Verifica se o Buffer esta pronto para ser lido
 
 		if(fromServer.ready()){
 			while(fromServer.ready()){
