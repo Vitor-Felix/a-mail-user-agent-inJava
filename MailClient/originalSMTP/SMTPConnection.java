@@ -2,6 +2,10 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
+/*
+	CODIGO BRUTO PARA SER IMPLEMENTADO
+*/
+
 /**
 * Open an SMTP connection to a mailserver and send one mail.
 *

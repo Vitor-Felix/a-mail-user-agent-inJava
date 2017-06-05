@@ -1,24 +1,22 @@
-1. Código Bruto encontrado por Mafaldo:
-	http://homes.di.unimi.it/~gfp/ReCa/Books/Kurose-Ross/2nd%20edition/Programming%20Assignments/Solution%202.htm
 
-2. SMTP Command Reference:
+SMTP Command Reference:
 	http://www.samlogic.net/articles/smtp-commands-reference.htm
 
-3. Mailinator:
+Mailinator:
 	https://www.mailinator.com/
 
-4. Talvez ajude com gmail:
+Talvez ajude com gmail:
 	https://www.lifewire.com/what-are-the-gmail-smtp-settings-1170854
 
-5. SMTP Go (sugerido para enviar entre emails):
+SMTP Go (sugerido para enviar entre emails):
 	https://www.smtp2go.com/
 
-6. Usando Javax para enviar para gmail:
+Usando Javax para enviar para gmail:
 	https://www.mkyong.com/java/javamail-api-sending-email-via-gmail-smtp-example/
 
-7. Javamail para hotmail:
+Javamail para hotmail:
 	http://www.devmedia.com.br/javamail-enviando-email-utilizando-o-hotmail/18042
 
-8. Passar campos de email e senha com AUTH:
+Passar campos de email e senha com AUTH:
 	http://www.samlogic.net/articles/smtp-commands-reference-auth.htm
 	
